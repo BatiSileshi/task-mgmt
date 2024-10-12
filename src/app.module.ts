@@ -17,12 +17,12 @@ import { projectSchema } from './modules/project/schema/project.schema';
 import { taskSchema } from './modules/task/schema/task.schema';
 import { teamSchema } from './modules/team/schema/team.schema';
 import { AuthMiddleware } from './modules/user/auth/auth.middleware';
-
+//wHcTTG0MQ4OCEdw7
 @Module({
   imports: [
     MongooseModule.forRoot(
       // `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@taskmgmtcluster.h3ynm.mongodb.net/?retryWrites=true&w=majority&appName=TaskMgmtCluster`
-      'mongodb+srv://batyjio:X4yamlPBBj25FSwE@taskmgmtcluster.h3ynm.mongodb.net/?retryWrites=true&w=majority&appName=TaskMgmtCluster'
+      'mongodb+srv://batyjio:wHcTTG0MQ4OCEdw7@taskmgmtcluster.s5z2a.mongodb.net/?retryWrites=true&w=majority&appName=TaskMgmtCluster'
     ),
     MongooseModule.forFeature([
       {name: 'User', schema: userSchema},

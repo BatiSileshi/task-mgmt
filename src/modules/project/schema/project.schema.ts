@@ -3,8 +3,11 @@ import { Schema as MongooseSchema } from "mongoose";
 import { Team } from "src/modules/team/schema/team.schema";
 import { List } from "src/modules/list/schema/list.schema";
 import { Issue } from "src/modules/issue/schema/issue.schema";
+import { Document } from "mongoose";
+import { User } from "src/modules/user/schema/user.schema";
+
 @Schema({ timestamps: true })
-export class Project {
+export class Project extends Document{
     @Prop()
     name: string;
     @Prop()
@@ -13,8 +16,18 @@ export class Project {
     startDate: Date;
     @Prop()
     dueDate: Date;
-    @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Team', unique: true})
-    team: Team;
+    @Prop({ default: false })
+    isArchived: boolean;
+    @Prop()
+    deletedAt: Date;
+    @Prop()
+    deletedBy: string;
+    @Prop()
+    archiveReason: string;
+    @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Team' }] })
+    teams: Team[];
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' })
+    owner: User;
     // project has many lists
     @Prop({ type: [{type: MongooseSchema.Types.ObjectId, ref:'List'}]})
     lists: List[];
