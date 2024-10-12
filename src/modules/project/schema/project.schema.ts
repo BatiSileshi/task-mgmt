@@ -4,7 +4,7 @@ import { Team } from "src/modules/team/schema/team.schema";
 import { List } from "src/modules/list/schema/list.schema";
 import { Issue } from "src/modules/issue/schema/issue.schema";
 @Schema({ timestamps: true })
-export class Project extends Document{
+export class Project {
     @Prop()
     name: string;
     @Prop()

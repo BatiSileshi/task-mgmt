@@ -4,18 +4,35 @@ import { Profile } from "./profile.schema";
 import { Project } from "src/modules/project/schema/project.schema";
 import { Team } from "src/modules/team/schema/team.schema";
 import { Task } from "src/modules/task/schema/task.schema";
+import { Document } from "mongoose";
 @Schema({ timestamps: true })
 export class User extends Document {
     @Prop()
     firstName: string;
     @Prop()
     lastName: string;
-    @Prop()
+    @Prop({ unique: true })
     email: string;
     @Prop()
+    phoneNumber: string;
+    @Prop()
+    jobTitle: string;
+    @Prop()
+    address: string;
+    @Prop()
+    role: string;
+    @Prop()
     password: string;
-    @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Profile' }) 
-    profile: Profile; 
+    @Prop({ default: false })
+    isArchived: boolean;
+    @Prop()
+    deletedAt: Date;
+    @Prop()
+    deletedBy: string;
+    @Prop()
+    archiveReason: string;
+    // @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Profile' }) 
+    // profile: Profile; 
     @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Project' }] }) 
     projects: Project[]; 
     @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref:'Team'}]})

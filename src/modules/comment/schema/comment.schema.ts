@@ -4,7 +4,7 @@ import { Schema as MongooseSchema } from "mongoose";
 import { User } from "src/modules/user/schema/user.schema";
 
 @Schema({ timestamps: true })
-export class Comment extends Document {
+export class Comment {
     @Prop()
     comment: string;
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User'})

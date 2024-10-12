@@ -3,7 +3,7 @@ import { Schema as MongooseSchema } from "mongoose";
 import { User } from "src/modules/user/schema/user.schema";
 
 @Schema({ timestamps: true })
-export class Task extends Document {
+export class Task {
     @Prop()
     name: string;
     @Prop()
