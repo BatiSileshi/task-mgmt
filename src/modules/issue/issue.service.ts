@@ -3,11 +3,12 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { IsIssue } from "./interface/issue.interface";
 import { ProjectService } from "../project/project.service";
-import { CreateIssueDto, UpdateIssueDto } from "./dto/issue.dto";
+import { CreateIssueDto, UpdateIssueDto, UpdateIssueStatusDto } from "./dto/issue.dto";
 import { ArchiveDto } from "src/utils/dtos/archive.dto";
 import { CurrentUser } from "../user/decorator/user.decorator";
 import { User } from "../user/schema/user.schema";
 import { Issue } from "./schema/issue.schema";
+import { IssueStatus } from "src/utils/enums";
 
 @Injectable()
 export class IssueService{
@@ -25,6 +26,7 @@ export class IssueService{
             const issue = await this.issueModel.create(createIssueDto);
             issue.project=createIssueDto.project;
             issue.raiser=user.id;
+            issue.status=IssueStatus.New;
             return await issue.save();
 
         }catch(error){
@@ -62,6 +64,11 @@ export class IssueService{
       
     async updateIssue(updateIssueDto: UpdateIssueDto, ){
         const { id, ...issueData } = updateIssueDto;
+        const issue = await this.issueModel.findByIdAndUpdate(id, issueData, {new: true});
+        return issue;
+    }
+    async updateIssueStatus(updateIssueStatusDto: UpdateIssueStatusDto, ){
+        const { id, ...issueData } = updateIssueStatusDto;
         const issue = await this.issueModel.findByIdAndUpdate(id, issueData, {new: true});
         return issue;
     }

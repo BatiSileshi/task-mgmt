@@ -47,6 +47,6 @@ export class AssignTaskDto {
     @ApiProperty({ type: [String]})
     @ArrayNotEmpty()
     @ArrayMinSize(1)
-    @IsMongoId()
+    @IsMongoId({ each: true })
     assignedTo: string[];
 }

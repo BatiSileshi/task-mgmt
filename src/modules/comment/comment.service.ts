@@ -21,11 +21,11 @@ export class CommentService{
           throw new NotFoundException('Task not found.');
         }
         try{
-            const comment = await this.commentModel.create(createCommentDto);
-            comment.task=createCommentDto.task;
-            comment.creator=user.id;
-            return await comment.save();
-
+            const comment1 = await this.commentModel.create(createCommentDto);
+            comment1.task=createCommentDto.task;
+            comment1.creator=user.id;
+            comment1.comment=createCommentDto.comment;
+            return await comment1.save();
         }catch(error){
             console.log(error)
         }

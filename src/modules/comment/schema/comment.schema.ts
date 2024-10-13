@@ -18,5 +18,7 @@ export class Comment extends Document{
     archiveReason: string;
     @Prop({type: MongooseSchema.Types.ObjectId, ref: 'User'})
     creator: MongooseSchema.Types.ObjectId;
+    @Prop({type: MongooseSchema.Types.ObjectId, ref: 'Task'})
+    task: MongooseSchema.Types.ObjectId;
 }
-export const commentSchema = SchemaFactory.createForClass(User);
+export const commentSchema = SchemaFactory.createForClass(Comment);

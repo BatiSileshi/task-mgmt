@@ -36,7 +36,10 @@ export class ListService{
         if(!id){
             return null;
         }
-        const list = await this.listModel.findById(id);
+        const list = await this.listModel
+        .findById(id)
+        .populate({ path: 'project', populate: { path: 'owner' } })
+        .exec();
         if(!list){
             throw new NotFoundException("List not found with this id.");
         }

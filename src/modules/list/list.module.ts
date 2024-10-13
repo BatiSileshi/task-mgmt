@@ -5,15 +5,19 @@ import { ListService } from './list.service';
 import { ListController } from './list.controller';
 import { ProjectService } from '../project/project.service';
 import { projectSchema } from '../project/schema/project.schema';
+import { teamSchema } from '../team/schema/team.schema';
+import { TeamService } from '../team/team.service';
 
 @Module({
     imports: [
         MongooseModule.forFeature([
             { name: 'List', schema: listSchema},
             { name: 'Project', schema: projectSchema},
+            { name: 'Team', schema: teamSchema},
+
         ])
     ],
-    providers: [ListService, ProjectService],
+    providers: [ListService, ProjectService, TeamService],
     controllers: [ListController],
     exports: [ListService]
 })

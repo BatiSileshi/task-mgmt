@@ -18,9 +18,6 @@ export class ProjectService {
         const project = await this.projectModel.create(createProjectDto);
         project.owner = user;
         return await project.save();
-        // const project = new this.projectModel(createProjectDto); // Creating new project instance
-        // project.owner = user._id;
-
     }
     async getProject(id: string){
         if(!id){

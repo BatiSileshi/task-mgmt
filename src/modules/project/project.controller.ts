@@ -6,6 +6,7 @@ import { CreateProjectDto, UpdateProjectDto } from "./dto/project.dto";
 import { CurrentUser } from "../user/decorator/user.decorator";
 import { User } from "../user/schema/user.schema";
 import { ArchiveDto } from "src/utils/dtos/archive.dto";
+import { ProjectOwnerDestroyGuard, ProjectOwnerGuard } from "src/utils/guards/project/project.guard";
 
 @ApiTags('Projects')
 @Controller('projects')
@@ -24,49 +25,43 @@ export class ProjectController {
     }
     @Get('get-project/:id')
     @ApiOperation({ summary: 'Get single project'})
-    // @UseGuards(AuthGuard, ProjectGuard)
+    @UseGuards(AuthGuard)
     async getProject(@Param('id') id: string){
         return this.projectService.getProject(id);
     }
     @Get('get-all-projects')
     @ApiOperation({ description: 'Get all projects' })
-    // @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard)
     async getProjects(){
         return this.projectService.getAllProjects();
     }
-    @Get('get-team-projects')
-    @ApiOperation({ description: 'Display projects for current user if he is a member of that project team.' })
-    @UseGuards(AuthGuard)
-    async getTeamProjects(@CurrentUser() userInfo: User){
-        return await this.projectService.findProjectByUserAndTeam(userInfo);
-    }
     @Get('get-my-projects')
-    @ApiOperation({ description: 'Get all projects created by current user' })
+    @ApiOperation({ description: 'Get all projects created by currently logged in user' })
     @UseGuards(AuthGuard)
     async getMyProjects(@CurrentUser() userInfo: User){
         return await this.projectService.findProjectsByUser(userInfo);
     }
     @Put('update-project')
-    @ApiOperation({ summary: 'Update a project', description: 'Current user can update a project iff he is creator.' })
-    // @UseGuards(AuthGuard, ProjectGuard)
+    @ApiOperation({ summary: 'Update a project', description: 'Logged in user can update a project iff he is creator.' })
+    @UseGuards(AuthGuard, ProjectOwnerGuard)
     async updateProject(@Body() body: UpdateProjectDto){
         return await this.projectService.updateProject(body);
     }
     @Delete('archive-project')
     @ApiOperation({summary: 'Archiving project (only by owner)'})
-    // @UseGuards(AuthGuard, ProjectGuard)
+    @UseGuards(AuthGuard, ProjectOwnerGuard)
     async archiveProject(@Body() archiveProject: ArchiveDto, @CurrentUser() userInfo: User){
         return await this.projectService.archiveProject(archiveProject, userInfo);
     }
     @Put('restore-project/:id')
-    @ApiOperation({summary: 'Restoring project'})
-    // @UseGuards(AuthGuard, ProjectGuard)
+    @ApiOperation({summary: 'Restoring project (only by owner)'})
+    @UseGuards(AuthGuard, ProjectOwnerDestroyGuard)
     async restoreProject(@Param('id') id: string){
         return await this.projectService.restoreProject(id);
     }
     @Delete('delete-project/:id')
-    @ApiOperation({summary: 'Deleting project'})
-    // @UseGuards(AuthGuard, ProjectGuard)
+    @ApiOperation({summary: 'Deleting project (only by owner)'})
+    @UseGuards(AuthGuard, ProjectOwnerDestroyGuard)
     async deleteProject(@Param('id') id: string){
         return await this.projectService.deleteProject(id);
     }

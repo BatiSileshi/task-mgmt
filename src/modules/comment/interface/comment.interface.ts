@@ -1,7 +1,7 @@
 import { Document } from "mongoose";
 
 export interface IsComment extends Document{
-    readonly comment: string;
+    comment: string;
     creator: string;
     task: string;
 }

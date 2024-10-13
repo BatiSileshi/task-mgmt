@@ -4,3 +4,8 @@ export enum UserRole {
     User='user',
     Owner='owner'
 }
+export enum IssueStatus {
+    New = 'new',
+    Accepted = 'Accepted',
+    Fixed = 'Fixed'
+}

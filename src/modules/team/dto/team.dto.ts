@@ -13,7 +13,7 @@ export class CreateTeamDto {
     @ApiProperty({ type: [String]})
     @ArrayNotEmpty()
     @ArrayMinSize(1)
-    @IsMongoId()
+    @IsMongoId({ each: true })
     membersIds: string[];
 }
 
@@ -29,6 +29,6 @@ export class UpdateTeamDto {
     @ApiProperty({ type: [String]})
     @ArrayNotEmpty()
     @ArrayMinSize(1)
-    @IsMongoId()
+    @IsMongoId({ each: true })
     membersIds: string[];
 }

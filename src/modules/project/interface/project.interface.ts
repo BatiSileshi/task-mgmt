@@ -9,7 +9,7 @@ export interface IsProject extends Document{
     readonly startDate: Date;
     readonly dueDate: Date;
     readonly team?: Team;
-    owner?: User;
+    owner: User;
     readonly lists?: List[];
     readonly issues?: Issue[];
 }

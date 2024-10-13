@@ -9,9 +9,9 @@ export class Task extends Document{
     @Prop()
     description: string;
     @Prop()
-    startDate: Date;
+    startDate: string;
     @Prop()
-    dueDate: Date;
+    dueDate: string;
     @Prop({ default: false })
     isArchived: boolean;
     @Prop()
