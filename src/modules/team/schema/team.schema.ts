@@ -8,9 +8,17 @@ import { Document } from "mongoose";
 export class Team extends Document{
     @Prop()
     name: string;
+    @Prop({ default: false })
+    isArchived: boolean;
+    @Prop()
+    deletedAt: Date;
+    @Prop()
+    deletedBy: string;
+    @Prop()
+    archiveReason: string;
     @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref:'User'}]})
     users: User[];
-    // @Prop({ type: MongooseSchema.Types.ObjectId, ref:'Project', unique: true})
-    // project: Project;
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Project', required: true })
+    project: MongooseSchema.Types.ObjectId;
 }
 export const teamSchema = SchemaFactory.createForClass(Team);

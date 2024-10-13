@@ -12,11 +12,21 @@ export class Task extends Document{
     startDate: Date;
     @Prop()
     dueDate: Date;
+    @Prop({ default: false })
+    isArchived: boolean;
+    @Prop()
+    deletedAt: Date;
+    @Prop()
+    deletedBy: string;
+    @Prop()
+    archiveReason: string;
     //task has many comments
     @Prop({type: [{type: MongooseSchema.Types.ObjectId, ref:'Comment'}]})
     comments: Comment[];
-    @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User'})
-    assignedTo: User;
+    @Prop({type: [{ type: MongooseSchema.Types.ObjectId, ref: 'User'}]})
+    assignedTo: MongooseSchema.Types.ObjectId[];
     //list  m to 1
+    @Prop({type: MongooseSchema.Types.ObjectId, ref:'List', required: true})
+    list: MongooseSchema.Types.ObjectId;
 }
 export const taskSchema = SchemaFactory.createForClass(Task);

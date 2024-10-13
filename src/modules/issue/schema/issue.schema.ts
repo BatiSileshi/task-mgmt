@@ -11,7 +11,17 @@ export class Issue extends Document{
     description: string;
     @Prop()
     status: string;
+    @Prop({ default: false })
+    isArchived: boolean;
+    @Prop()
+    deletedAt: Date;
+    @Prop()
+    deletedBy: string;
+    @Prop()
+    archiveReason: string;
     @Prop({type: MongooseSchema.Types.ObjectId, ref: 'User'})
-    raiser: User;
+    raiser: MongooseSchema.Types.ObjectId;
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Project', required: true })
+    project: MongooseSchema.Types.ObjectId;
 }
 export const issueSchema = SchemaFactory.createForClass(Issue);

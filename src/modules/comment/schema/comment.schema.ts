@@ -8,7 +8,15 @@ import { Document } from "mongoose";
 export class Comment extends Document{
     @Prop()
     comment: string;
-    @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User'})
-    creator: User;
+    @Prop({ default: false })
+    isArchived: boolean;
+    @Prop()
+    deletedAt: Date;
+    @Prop()
+    deletedBy: string;
+    @Prop()
+    archiveReason: string;
+    @Prop({type: MongooseSchema.Types.ObjectId, ref: 'User'})
+    creator: MongooseSchema.Types.ObjectId;
 }
 export const commentSchema = SchemaFactory.createForClass(User);
