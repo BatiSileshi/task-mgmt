@@ -43,8 +43,12 @@ export class AuthService {
     }
     async loginUser(email: string, password: string):Promise<LoginUserInterface>{
         const user = await this.userService.findUserByEmail(email);
+        console.log("🚀 ~ AuthService ~ loginUser ~ user:", user)
         if(!user){
             throw new NotFoundException('User not found with this credential.')
+        }
+        if(user.isArchived === true){
+            throw new BadRequestException("You are blocked.")
         }
         const [salt, storedHash] = user.password.split('.');
         const hash = (await scrypt(password, salt, 32)) as Buffer;

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
+import { IsMongoId, IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 export class CreateUserDto {
     @ApiProperty()
@@ -33,10 +33,6 @@ export class CreateUserDto {
 
 export class UpdateUserDto {
     @ApiProperty()
-    @IsUUID()
-    @IsNotEmpty()
-    id: string;
-    @ApiProperty()
     @IsOptional()
     @IsString()
     firstName: string;
@@ -61,12 +57,13 @@ export class UpdateUserDto {
     @IsOptional()
     location: string;
     @IsString()
+    @IsOptional()
     role: string;
 }
 
 export class ArchiveUserDto {
     @ApiProperty()
-    @IsUUID()
+    @IsMongoId()
     @IsNotEmpty()
     id: string;
     @ApiProperty()

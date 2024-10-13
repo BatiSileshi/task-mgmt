@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { ProjectService } from "./project.service";
-import { AuthGuard } from "src/utils/guards/auth.guard";
+import { AuthGuard } from "src/utils/guards/user/auth.guard";
 import { CreateProjectDto, UpdateProjectDto } from "./dto/project.dto";
 import { CurrentUser } from "../user/decorator/user.decorator";
 import { User } from "../user/schema/user.schema";

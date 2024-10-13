@@ -6,6 +6,7 @@ import { ArchiveUserDto, UpdateUserDto } from "./dto/user.dto";
 import { User } from "./schema/user.schema";
 import { UtilFunctions } from "src/utils/utils";
 import { UserRole } from "src/utils/enums";
+import { CurrentUser } from "./decorator/user.decorator";
 
 @Injectable()
 export class UserService {
@@ -29,7 +30,7 @@ export class UserService {
         }
     }
     async getAllUsers():Promise<IsUser[]>{
-        const users = await this.userModel.find();
+        const users = await this.userModel.find({isArchived: false});
         if(!users){
             throw new NotFoundException('Users not found.')
         }
@@ -40,15 +41,20 @@ export class UserService {
         if(!user){
             throw new NotFoundException('User not found.')
         }
+        if(user.isArchived === true){
+            throw new NotFoundException('User blocked.')
+        }
         return user as User;
     }
     async findUserByEmail(email: string):Promise<IsUser>{
-        return await this.userModel.findOne({ email }).exec();
-
+        return await this.userModel.findOne({ email, isArchived: false }).exec();
     }
-    async updateUser(updateUserDto: UpdateUserDto, ):Promise<IsUser>{
-        const { id, ...userData } = updateUserDto;
-        const user = await this.userModel.findByIdAndUpdate(id, userData, {new: true});
+    async updateUser(updateUserDto: UpdateUserDto, @CurrentUser() userId: User):Promise<IsUser>{
+        const existingUser = await this.getUser(userId.id);
+        if(existingUser.isArchived === true){
+            throw new BadRequestException("You are blocked.")
+        }
+        const user = await this.userModel.findByIdAndUpdate(userId.id, updateUserDto, {new: true});
         return user;
     }
     async archiveUser(archiveUserDto: ArchiveUserDto): Promise<User>{

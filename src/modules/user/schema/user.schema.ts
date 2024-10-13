@@ -40,4 +40,11 @@ export class User extends Document {
     @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Task'}] })
     tasks: Task[];
 }
-export const userSchema = SchemaFactory.createForClass(User);
+const userSchema1 = SchemaFactory.createForClass(User);
+userSchema1.set('toJSON', {
+    transform: (doc, ret) => {
+      delete ret.password;
+      return ret;
+    },
+});
+export const userSchema = userSchema1;

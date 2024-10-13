@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
-import { AuthGuard } from "src/utils/guards/auth.guard";
+import { AuthGuard } from "src/utils/guards/user/auth.guard";
 import { ListService } from "./list.service";
 import { CreateListDto, UpdateListDto } from "./dto/list.dto";
 import { CurrentUser } from "../user/decorator/user.decorator";
