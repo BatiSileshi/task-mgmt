@@ -47,7 +47,7 @@ cd task-mgmt
 npm install
 ```
 3. Environment Variables
-Create a .env file in the root directory and copy environment variables found in .env.example file.
+Create a .env file in the root directory and copy environment variables found in .env.example file and change them to real information.
 
 4. Run the Server To run the server locally, use the following command:
    ```bash
