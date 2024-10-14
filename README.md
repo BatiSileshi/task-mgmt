@@ -67,9 +67,11 @@ Authorization Header: Bearer <your-token>
 
 #### User
 1. POST /users/create-user
+
    Registers a new user
    
 3. POST users/login
+
    Logs in an existing user and returns a JWT token (access and refresh).
    
 5. GET users/get-my-profile
