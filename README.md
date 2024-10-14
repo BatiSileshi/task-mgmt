@@ -22,7 +22,9 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+## Task Management System - Backend Documentation
+
+This is a Node.js backend application for a task management system. The project is designed with a modular approach to handle tasks, teams, projects, lists, comments, issues and users. This documentation provides instructions on setting up and running the backend server locally, along with details of the available API endpoints and authentication requirements.
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
