@@ -64,24 +64,33 @@ All secured endpoints require a JWT token. You can get the token by logging in t
 Authorization Header: Bearer <your-token>
 
 ### Endpoints
+
 #### User
 1. POST /users/create-user
    Registers a new user
-2. POST users/login
+   
+3. POST users/login
    Logs in an existing user and returns a JWT token (access and refresh).
-3. GET users/get-my-profile
+   
+5. GET users/get-my-profile
    Gets currently logged in user information (profile)
-4. GET users/get-user/{id}
+   
+7. GET users/get-user/{id}
    Gets users profile
-5. GET /users/get-user-by-email/{email}
+   
+9. GET /users/get-user-by-email/{email}
    Helps to get user by email
-6. PUT /users/update-profile
+   
+11. PUT /users/update-profile
    Updates a user profile (Logged in user can update his/her profile)
-7. DELETE /users/archive-user
+
+13. DELETE /users/archive-user
    Archives user - permanent delete, can be done by admins
-8. PUT /users/restore-user/{id}
+
+15. PUT /users/restore-user/{id}
    Restores archived user (done by admin)
-9. DELETE /users/delete-user/{id}
+
+17. DELETE /users/delete-user/{id}
    Permanently delete user (by admin)
    
 ```bash
