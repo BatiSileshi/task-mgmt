@@ -55,6 +55,8 @@ Create a .env file in the root directory and copy environment variables found in
    ```
 5. Accessing the API
    The API will be available at http://localhost:3001/api/.
+   Descriptions for each endpoints are added.
+   
    
 ## API Documentation
 
@@ -63,48 +65,6 @@ All secured endpoints require a JWT token. You can get the token by logging in t
 
 Authorization Header: Bearer <your-token>
 
-### Endpoints
-
-#### User
-1. POST /users/create-user
-
-   Registers a new user
-   
-3. POST users/login
-
-   Logs in an existing user and returns a JWT token (access and refresh).
-   
-5. GET users/get-my-profile
-   Gets currently logged in user information (profile)
-   
-7. GET users/get-user/{id}
-   Gets users profile
-   
-9. GET /users/get-user-by-email/{email}
-   Helps to get user by email
-   
-11. PUT /users/update-profile
-   Updates a user profile (Logged in user can update his/her profile)
-
-13. DELETE /users/archive-user
-   Archives user - permanent delete, can be done by admins
-
-15. PUT /users/restore-user/{id}
-   Restores archived user (done by admin)
-
-17. DELETE /users/delete-user/{id}
-   Permanently delete user (by admin)
-   
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
 
 ## Resources
 
