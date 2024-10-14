@@ -24,10 +24,10 @@ export class ListService{
         }
         try{
             const list = await this.listModel.create(createListDto);
-            list.project=createListDto.project;
-            
-            return await list.save();
-
+            existingProject.lists.push(list.id); 
+            await existingProject.save();
+    
+            return list; 
         }catch(error){
             console.log(error)
         }

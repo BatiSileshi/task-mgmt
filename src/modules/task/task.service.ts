@@ -24,6 +24,8 @@ export class TaskService{
         try{
             const task = await this.taskModel.create(createTaskDto);
             task.list=createTaskDto.list;
+            existingList.tasks.push(task.id); 
+            await existingList.save();
             return await task.save();
 
         }catch(error){

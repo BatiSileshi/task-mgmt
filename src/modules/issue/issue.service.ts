@@ -27,6 +27,8 @@ export class IssueService{
             issue.project=createIssueDto.project;
             issue.raiser=user.id;
             issue.status=IssueStatus.New;
+            existingProject.issues.push(issue.id); 
+            await existingProject.save();
             return await issue.save();
 
         }catch(error){

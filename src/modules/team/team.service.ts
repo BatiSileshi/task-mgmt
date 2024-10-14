@@ -24,6 +24,8 @@ export class TeamService {
         const team = await this.teamModel.create(createTeamDto);
         team.project=createTeamDto.project;
         team.users=createTeamDto.membersIds;
+        project.teams.push(team.id); 
+        await project.save();
         return await team.save();
     }
     //get team by project

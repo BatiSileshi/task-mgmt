@@ -12,4 +12,5 @@ export interface IsProject extends Document{
     owner: User;
     readonly lists?: List[];
     readonly issues?: Issue[];
+    readonly teams?: Team[];
 }

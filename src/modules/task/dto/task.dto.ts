@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { ArrayMinSize, ArrayNotEmpty, IsMongoId, IsNotEmpty, IsString } from "class-validator";
+import { ArrayMinSize, ArrayNotEmpty, IsMongoId, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateTaskDto {
     @ApiProperty()
@@ -27,16 +27,24 @@ export class UpdateTaskDto {
     id: string;
     @ApiProperty()
     @IsString()
-    @IsNotEmpty()
+    @IsMongoId()
+    @IsOptional()
+    list: string;
+    @ApiProperty()
+    @IsString()
+    @IsOptional()
     name: string;
     @ApiProperty()
     @IsString()
+    @IsOptional()
     description: string;
     @ApiProperty()
     @IsString()
+    @IsOptional()
     startDate: string;
     @ApiProperty()
     @IsString()
+    @IsOptional()
     dueDate: string;    
 }
 export class AssignTaskDto {
