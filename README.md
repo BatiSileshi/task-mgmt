@@ -26,28 +26,37 @@
 
 This is a Node.js backend application for a task management system. The project is designed with a modular approach to handle tasks, teams, projects, lists, comments, issues and users. This documentation provides instructions on setting up and running the backend server locally, along with details of the available API endpoints and authentication requirements.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Project setup
+## Prerequisites
+
+Before setting up the project, ensure you have the following installed:
+
+- Node.js (v14.x or above)
+- MongoDB (local instance or a MongoDB Atlas URI)
+- npm (Node Package Manager)
+
+## Setup Instructions
+1. Clone the project
 
 ```bash
-$ npm install
+git clone https://github.com/BatiSileshi/task-mgmt.git
+cd task-mgmt
 ```
-
-## Compile and run the project
-
+2. Install dependencies
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
+3. Environment Variables
+Create a .env file in the root directory and copy environment variables found in .env.example file.
 
-## Run tests
+4. Run the Server To run the server locally, use the following command:
+   ```bash
+   npm run start
+   ```
+5. Accessing the API
+   The API will be available at http://localhost:3001/api/.
+   
+## API Documentation
 
 ```bash
 # unit tests
