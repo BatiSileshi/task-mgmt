@@ -66,6 +66,13 @@ All secured endpoints require a JWT token. You can get the token by logging in t
 Authorization Header: Bearer <your-token>
 
 
+
+
+
+
+
+
+
 ## Resources
 
 Check out a few resources that may come in handy when working with NestJS:
