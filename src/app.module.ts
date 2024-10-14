@@ -17,13 +17,24 @@ import { projectSchema } from './modules/project/schema/project.schema';
 import { taskSchema } from './modules/task/schema/task.schema';
 import { teamSchema } from './modules/team/schema/team.schema';
 import { AuthMiddleware } from './modules/user/auth/auth.middleware';
-//wHcTTG0MQ4OCEdw7
+import { MailerModule } from '@nestjs-modules/mailer';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthService } from './modules/user/auth/auth.service';
+import { UtilFunctions } from './utils/utils';
+
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      // `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@taskmgmtcluster.h3ynm.mongodb.net/?retryWrites=true&w=majority&appName=TaskMgmtCluster`
-      'mongodb+srv://batyjio:wHcTTG0MQ4OCEdw7@taskmgmtcluster.s5z2a.mongodb.net/?retryWrites=true&w=majority&appName=TaskMgmtCluster'
-    ),
+    ConfigModule.forRoot({
+      isGlobal: true, 
+      envFilePath: '.env', 
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        uri: `mongodb+srv://${configService.get('DB_USERNAME')}:${configService.get('DB_PASSWORD')}@taskmgmtcluster.s5z2a.mongodb.net/?retryWrites=true&w=majority&appName=TaskMgmtCluster`,
+      }),
+    }),
     MongooseModule.forFeature([
       {name: 'User', schema: userSchema},
       {name: 'Comment', schema: commentSchema},
@@ -33,24 +44,29 @@ import { AuthMiddleware } from './modules/user/auth/auth.middleware';
       {name: 'Task', schema: taskSchema},
       {name: 'Team', schema: teamSchema},
     ]),
+    MailerModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        transport: {
+          host: 'smtp.gmail.com',
+          auth: {
+            user: configService.get('MAIL_USER'),
+            pass: configService.get('MAIL_PASSWORD'),
+          },
+        },
+      }),
+
+      inject: [ConfigService],
+    }),
+
     UsersModule, ProjectsModule, CommentsModule, ListsModule, IssuesModule, TaskModule, TeamModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AuthService, UtilFunctions],
 })
-// export class AppModule {
-//   configure(consumer: MiddlewareConsumer){
-//     consumer.apply(AuthMiddleware).forRoutes(
-//       {path: '*',method: RequestMethod.POST},
-//       {path: '*',method: RequestMethod.GET},
-//       {path: '*',method: RequestMethod.PATCH},
-//       {path: '*',method: RequestMethod.DELETE}
-//       )
-//   }
-// }
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
       consumer
           .apply(AuthMiddleware)
-          .forRoutes('*'); // Apply to all routes or specify your routes
+          .forRoutes('*'); 
   }
 }

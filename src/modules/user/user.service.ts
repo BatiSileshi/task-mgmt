@@ -49,6 +49,9 @@ export class UserService {
     async findUserByEmail(email: string):Promise<IsUser>{
         return await this.userModel.findOne({ email, isArchived: false }).exec();
     }
+    async findUserByResetToken(forgotPasswordToken: string):Promise<IsUser>{
+        return await this.userModel.findOne({ forgotPasswordToken, isArchived: false }).exec();
+    }
     async updateUser(updateUserDto: UpdateUserDto, @CurrentUser() userId: User):Promise<IsUser>{
         const existingUser = await this.getUser(userId.id);
         if(existingUser.isArchived === true){

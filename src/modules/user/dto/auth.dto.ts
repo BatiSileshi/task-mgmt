@@ -13,3 +13,10 @@ export class LoginUserDto{
     password: string;
 
 }
+
+export class ResetPasswordDto{
+    @ApiProperty()
+    @IsString()
+    @IsNotEmpty()
+    password: string;
+}

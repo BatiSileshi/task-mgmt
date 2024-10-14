@@ -39,6 +39,8 @@ export class User extends Document {
     teams: Team[];
     @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Task'}] })
     tasks: Task[];
+    @Prop({ default: null })
+    forgotPasswordToken: string;
 }
 const userSchema1 = SchemaFactory.createForClass(User);
 userSchema1.set('toJSON', {

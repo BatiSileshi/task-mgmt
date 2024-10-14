@@ -10,7 +10,7 @@ export interface IsUser extends Document {
     readonly jobTitle: string;
     readonly address: string;
     readonly role: string;
-    readonly password: string;
+    password: string;
     readonly isArchived: boolean;
     readonly deletedAt?: Date;
     readonly deletedBy?: string;
@@ -18,6 +18,7 @@ export interface IsUser extends Document {
     readonly projects?: Project[];
     readonly teams?: Team[];
     readonly tasks?: Task[];
+    forgotPasswordToken: string;
 }
 
 
