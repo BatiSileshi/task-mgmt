@@ -15,6 +15,8 @@ export class Task extends Document{
     @Prop({ default: false })
     isArchived: boolean;
     @Prop()
+    status: string;
+    @Prop()
     deletedAt: Date;
     @Prop()
     deletedBy: string;

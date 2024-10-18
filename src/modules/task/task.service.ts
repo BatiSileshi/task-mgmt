@@ -3,18 +3,23 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { IsTask } from "./interface/task.interface";
 import { ListService } from "../list/list.service";
-import { AssignTaskDto, CreateTaskDto, UpdateTaskDto } from "./dto/task.dto";
+import { AssignTaskDto, CompleteTaskDto, CreateTaskDto, UpdateTaskDto } from "./dto/task.dto";
 import { CurrentUser } from "../user/decorator/user.decorator";
 import { User } from "../user/schema/user.schema";
 import { ArchiveDto } from "src/utils/dtos/archive.dto";
 import { Task } from "./schema/task.schema";
+import { EmailSender } from "src/utils/emails/email";
+import { UserService } from "../user/user.service";
+import { TaskStatus } from "src/utils/enums";
 
 @Injectable()
 export class TaskService{
     constructor(
         @InjectModel('Task')
         private taskModel: Model<IsTask>,
-        private readonly listService: ListService
+        private readonly listService: ListService,
+        private emailSender: EmailSender,
+        private userService: UserService,
     ){}
     async createTask(createTaskDto: CreateTaskDto):Promise<IsTask>{
         const existingList = await this.listService.getList(createTaskDto.list);
@@ -24,6 +29,7 @@ export class TaskService{
         try{
             const task = await this.taskModel.create(createTaskDto);
             task.list=createTaskDto.list;
+            task.status = TaskStatus.Started;
             existingList.tasks.push(task.id); 
             await existingList.save();
             return await task.save();
@@ -49,6 +55,10 @@ export class TaskService{
         }
         return tasks;
     }
+    async getAssignedTask(id: string): Promise<IsTask[]>{
+        const tasks = await this.taskModel.find({ assignedTo: id });
+        return tasks;
+    }
     async getTasksByList(id: string): Promise<IsTask[]> {
         const list = await this.listService.getList(id);
         if(!list){
@@ -64,11 +74,29 @@ export class TaskService{
     async updateTask(updateTaskDto: UpdateTaskDto, ){
         const { id, ...taskData } = updateTaskDto;
         const task = await this.taskModel.findByIdAndUpdate(id, taskData, {new: true});
+        const assigned = await this.userService.getUser(task.assignedTo);
+        const list = await this.listService.getList(task.list);
+        if(updateTaskDto.list !==null){
+            await this.emailSender.sendTaskUpdateEmail(assigned.email, task.name, list.name);
+        }
+        return task;
+    }
+    async completeTask(completeTask: CompleteTaskDto){
+        const { id, ...status } = completeTask;
+        const task = await this.taskModel.findByIdAndUpdate(id, { status: TaskStatus.Completed }, {new: true});
+        const assigned = await this.userService.getUser(task.assignedTo);
+        if(assigned){
+            await this.emailSender.sendTaskCompleteEmail(assigned.email, task.name);
+        }
         return task;
     }
     async assignTask(assignTaskDto: AssignTaskDto){
         const { id, ...taskData } = assignTaskDto;
         const task = await this.taskModel.findByIdAndUpdate(id, taskData, {new: true});
+        const assigned = await this.userService.getUser(task.assignedTo);
+        if(assigned){
+            await this.emailSender.sendTaskAssignmentEmail(assigned.email, task.name, task.dueDate);
+        }
         return task;
     }
     async archiveTask(@Body() archiveDto: ArchiveDto,  @CurrentUser() userInfo: User): Promise<Task>{

@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { TaskService } from "./task.service";
-import { AssignTaskDto, CreateTaskDto, UpdateTaskDto } from "./dto/task.dto";
+import { AssignTaskDto, CompleteTaskDto, CreateTaskDto, UpdateTaskDto } from "./dto/task.dto";
 import { CurrentUser } from "../user/decorator/user.decorator";
 import { User } from "../user/schema/user.schema";
 import { ArchiveDto } from "src/utils/dtos/archive.dto";
@@ -40,6 +40,12 @@ export class TaskController {
         const tasks = await this.taskService.getTasksByList(id);
         return tasks;
       }
+    @Get('get-assigned-tasks')
+    @ApiOperation({ summary: 'Get assigned tasks to current user.'})
+    @UseGuards(AuthGuard)
+    async getAssignedTask(@CurrentUser() user: User){
+        return await this.taskService.getAssignedTask(user.id);
+    }
     @Put('update-task')
     @ApiOperation({ summary: 'Update a task'})
     @UseGuards(AuthGuard)
@@ -47,10 +53,16 @@ export class TaskController {
         return await this.taskService.updateTask(body);
     }
     @Put('assign-task')
-    @ApiOperation({ summary: 'Assign a task', description: '.....' })
+    @ApiOperation({ summary: 'Assign a task' })
     @UseGuards(AuthGuard)
     async assignTask(@Body() body: AssignTaskDto){
         return await this.taskService.assignTask(body);
+    }
+    @Put('complete-task')
+    @ApiOperation({ summary: 'Complete a task' })
+    @UseGuards(AuthGuard)
+    async completeTask(@Body() body: CompleteTaskDto){
+        return await this.taskService.completeTask(body);
     }
     @Delete('archive-task')
     @ApiOperation({summary: 'Archiving task '})

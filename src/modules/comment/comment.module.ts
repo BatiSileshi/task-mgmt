@@ -9,6 +9,10 @@ import { ProjectService } from '../project/project.service';
 import { CommentController } from './comment.controller';
 import { listSchema } from '../list/schema/list.schema';
 import { ListService } from '../list/list.service';
+import { EmailSender } from 'src/utils/emails/email';
+import { UserService } from '../user/user.service';
+import { userSchema } from '../user/schema/user.schema';
+import { UtilFunctions } from 'src/utils/utils';
 
 @Module({
     imports: [
@@ -17,10 +21,11 @@ import { ListService } from '../list/list.service';
             {name: 'Task', schema: taskSchema},
             {name: 'Project', schema: projectSchema},
             {name: 'List', schema: listSchema},
+            {name: 'User', schema: userSchema},
 
         ])
     ],
-    providers: [CommentService, TaskService, ProjectService, ListService],
+    providers: [CommentService, TaskService, ProjectService, ListService, EmailSender, UserService, UtilFunctions],
     controllers: [CommentController],
     exports: [CommentService]
 })

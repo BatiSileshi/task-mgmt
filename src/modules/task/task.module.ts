@@ -7,16 +7,22 @@ import { ListService } from '../list/list.service';
 import { TaskController } from './task.controller';
 import { ProjectService } from '../project/project.service';
 import { projectSchema } from '../project/schema/project.schema';
+import { EmailSender } from 'src/utils/emails/email';
+import { userSchema } from '../user/schema/user.schema';
+import { UserService } from '../user/user.service';
+import { UtilFunctions } from 'src/utils/utils';
 
 @Module({
     imports: [
         MongooseModule.forFeature([
             {name: 'Task', schema: taskSchema},
             {name: 'List', schema: listSchema},
-            {name: 'Project', schema: projectSchema}
+            {name: 'Project', schema: projectSchema},
+            {name: 'User', schema: userSchema},
         ])
     ],
-    providers: [TaskService, ListService, ProjectService],
+    providers: [TaskService, ListService, ProjectService, EmailSender, UserService, UtilFunctions
+    ],
     controllers: [TaskController],
     exports: [TaskService]
 })

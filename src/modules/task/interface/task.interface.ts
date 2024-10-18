@@ -5,6 +5,9 @@ export interface IsTask extends Document{
     readonly description: string;
     readonly startDate: Date;
     readonly dueDate: Date;
+    status: string;
     assignedTo: string;
     list: string;
+    readonly comments?: Comment[];
+
 }

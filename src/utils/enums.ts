@@ -6,6 +6,10 @@ export enum UserRole {
 }
 export enum IssueStatus {
     New = 'new',
-    Accepted = 'Accepted',
-    Fixed = 'Fixed'
+    Accepted = 'accepted',
+    Fixed = 'fixed'
+}
+export enum TaskStatus {
+    Started = 'inProgress',
+    Completed = 'completed'
 }

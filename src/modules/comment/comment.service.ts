@@ -25,6 +25,8 @@ export class CommentService{
             comment1.task=createCommentDto.task;
             comment1.creator=user.id;
             comment1.comment=createCommentDto.comment;
+            existingTask.comments.push(comment1.id);
+            await existingTask.save();
             return await comment1.save();
         }catch(error){
             console.log(error)

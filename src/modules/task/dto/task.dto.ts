@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { ArrayMinSize, ArrayNotEmpty, IsMongoId, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { TaskStatus } from "src/utils/enums";
 
 export class CreateTaskDto {
     @ApiProperty()
@@ -57,4 +58,11 @@ export class AssignTaskDto {
     @ArrayMinSize(1)
     @IsMongoId({ each: true })
     assignedTo: string[];
+}
+export class CompleteTaskDto {
+    @ApiProperty()
+    @IsMongoId()
+    @IsNotEmpty()
+    id: string;
+    status: TaskStatus.Completed;
 }
