@@ -6,6 +6,7 @@ import { CurrentUser } from "../user/decorator/user.decorator";
 import { User } from "../user/schema/user.schema";
 import { ArchiveDto } from "src/utils/dtos/archive.dto";
 import { AuthGuard } from "src/utils/guards/user/auth.guard";
+import { CreateTaskGuard, GetTaskGuard, TaskAccess2Guard, TaskAccessGuard } from "src/utils/guards/task/task.guard";
 
 @ApiTags('Tasks')
 @Controller('tasks')
@@ -15,7 +16,7 @@ export class TaskController {
     ){}
     @Post('create-task')
     @ApiOperation({description: 'Create task for project'})
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard, CreateTaskGuard)
     async createTask(
         @Body() body: CreateTaskDto,
     ){
@@ -33,9 +34,9 @@ export class TaskController {
     async getTasks(){
         return this.taskService.getAllTasks();
     }
-    @Get('get-project-tasks/:id')
+    @Get('get-list-tasks/:id')
     @ApiOperation({ summary: 'Get tasks of a list'})
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard, GetTaskGuard)
     async getTasksByList(@Param('id') id: string) {
         const tasks = await this.taskService.getTasksByList(id);
         return tasks;
@@ -48,37 +49,37 @@ export class TaskController {
     }
     @Put('update-task')
     @ApiOperation({ summary: 'Update a task'})
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard, TaskAccessGuard)
     async updateTask(@Body() body: UpdateTaskDto){
         return await this.taskService.updateTask(body);
     }
     @Put('assign-task')
     @ApiOperation({ summary: 'Assign a task' })
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard, TaskAccessGuard)
     async assignTask(@Body() body: AssignTaskDto){
         return await this.taskService.assignTask(body);
     }
     @Put('complete-task')
     @ApiOperation({ summary: 'Complete a task' })
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard, TaskAccessGuard)
     async completeTask(@Body() body: CompleteTaskDto){
         return await this.taskService.completeTask(body);
     }
     @Delete('archive-task')
     @ApiOperation({summary: 'Archiving task '})
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard, TaskAccessGuard)
     async archiveTask(@Body() archiveTask: ArchiveDto, @CurrentUser() userInfo: User){
         return await this.taskService.archiveTask(archiveTask, userInfo);
     }
     @Put('restore-task/:id')
     @ApiOperation({summary: 'Restoring task'})
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard, TaskAccess2Guard)
     async restoreTask(@Param('id') id: string){
         return await this.taskService.restoreTask(id);
     }
     @Delete('delete-task/:id')
     @ApiOperation({summary: 'Deleting task'})
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard, TaskAccess2Guard)
     async deleteTask(@Param('id') id: string){
         return await this.taskService.deleteTask(id);
     }

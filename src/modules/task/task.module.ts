@@ -11,6 +11,8 @@ import { EmailSender } from 'src/utils/emails/email';
 import { userSchema } from '../user/schema/user.schema';
 import { UserService } from '../user/user.service';
 import { UtilFunctions } from 'src/utils/utils';
+import { TeamService } from '../team/team.service';
+import { teamSchema } from '../team/schema/team.schema';
 
 @Module({
     imports: [
@@ -19,9 +21,11 @@ import { UtilFunctions } from 'src/utils/utils';
             {name: 'List', schema: listSchema},
             {name: 'Project', schema: projectSchema},
             {name: 'User', schema: userSchema},
+            {name: 'Team', schema: teamSchema},
         ])
     ],
-    providers: [TaskService, ListService, ProjectService, EmailSender, UserService, UtilFunctions
+    providers: [TaskService, ListService, ProjectService, EmailSender, UserService, 
+        UtilFunctions, TeamService
     ],
     controllers: [TaskController],
     exports: [TaskService]

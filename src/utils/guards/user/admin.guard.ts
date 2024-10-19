@@ -6,8 +6,6 @@ import { UserRole } from "src/utils/enums";
 export class SuperAdminGuard implements CanActivate {
     canActivate(context: ExecutionContext): boolean {
         const request = context.switchToHttp().getRequest<ExpressRequest>();
-        console.log("🚀 ~ AuthGuard ~ canActivate ~ request:", request)
-        console.log("🚀 USERRRRRR", request.user.role)
         if(request.user.role === UserRole.SuperAdmin){
             return true;
         }

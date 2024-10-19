@@ -7,7 +7,7 @@ import { ArchiveDto } from "src/utils/dtos/archive.dto";
 import { CurrentUser } from "../user/decorator/user.decorator";
 import { User } from "../user/schema/user.schema";
 import { AuthGuard } from "src/utils/guards/user/auth.guard";
-import { Team1Guard, TeamGuard } from "src/utils/guards/team/team.guard";
+import { GetTeamAccessGuard, TeamGuard } from "src/utils/guards/team/team.guard";
 
 @ApiTags('Teams')
 @Controller('teams')
@@ -37,8 +37,8 @@ export class TeamController {
         return this.teamService.getAllTeams();
     }
     @Get('get-project-teams/:id')
-    @ApiOperation({ summary: 'Get teams of a project', description: 'A current user can see team, iff he is owner the project and in team of the project only.' })
-    @UseGuards(AuthGuard, Team1Guard)
+    @ApiOperation({ summary: 'Get teams of a project', description: 'A current user can see team, iff he is owner the project or in team of the project only.' })
+    @UseGuards(AuthGuard, GetTeamAccessGuard)
     async getTeamsByProject(@Param('id') id: string) {
         const project = await this.projectService.getProject(id);
         if (!project) {
