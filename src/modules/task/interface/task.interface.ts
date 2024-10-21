@@ -5,6 +5,7 @@ export interface IsTask extends Document{
     readonly description: string;
     readonly startDate: Date;
     readonly dueDate: Date;
+    completedAt: Date;
     status: string;
     assignedTo: string;
     list: string;

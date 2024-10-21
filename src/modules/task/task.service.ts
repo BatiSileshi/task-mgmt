@@ -59,6 +59,28 @@ export class TaskService{
         const tasks = await this.taskModel.find({ assignedTo: id });
         return tasks;
     }
+    async calculateCompletionRate(userId: string): Promise<number> {
+        const tasks = await this.getAssignedTask(userId);
+    
+        if (tasks.length === 0) {
+            return 0;
+        }
+        const completedTasks = tasks.filter(task => task.status === TaskStatus.Completed).length;
+        const completionRate = (completedTasks / tasks.length) * 100;
+        return completionRate;
+    }
+    // Find all tasks that have dueDate in the past and status is not completed
+    async getOverdueTasks(userId: string): Promise<any[]> {
+        const currentDate = new Date();
+        const overdueTasks = await this.taskModel.find({
+            assignedTo: userId,
+            dueDate: { $lt: currentDate },
+            status: { $ne: TaskStatus.Completed }
+        });
+    
+        return overdueTasks;
+    }
+
     async getTasksByList(id: string): Promise<IsTask[]> {
         const list = await this.listService.getList(id);
         if(!list){
@@ -83,7 +105,7 @@ export class TaskService{
     }
     async completeTask(completeTask: CompleteTaskDto){
         const { id, ...status } = completeTask;
-        const task = await this.taskModel.findByIdAndUpdate(id, { status: TaskStatus.Completed }, {new: true});
+        const task = await this.taskModel.findByIdAndUpdate(id, { status: TaskStatus.Completed, completedAt: new Date()}, {new: true});
         const assigned = await this.userService.getUser(task.assignedTo);
         if(assigned){
             await this.emailSender.sendTaskCompleteEmail(assigned.email, task.name);

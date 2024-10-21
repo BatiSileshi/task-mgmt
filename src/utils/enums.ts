@@ -10,6 +10,7 @@ export enum IssueStatus {
     Fixed = 'fixed'
 }
 export enum TaskStatus {
+    Pending = 'pending',
     Started = 'inProgress',
     Completed = 'completed'
 }

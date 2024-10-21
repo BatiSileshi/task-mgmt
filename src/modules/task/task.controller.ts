@@ -47,6 +47,15 @@ export class TaskController {
     async getAssignedTask(@CurrentUser() user: User){
         return await this.taskService.getAssignedTask(user.id);
     }
+    @Get('/dashboard')
+    @ApiOperation({ summary: 'Get report of assigned tasks, task completion rate and overdue tasks.'})
+    @UseGuards(AuthGuard)
+    async getUserDashboard(@CurrentUser() user: User): Promise<any> {
+        const userTasks = await this.taskService.getAssignedTask(user.id);
+        const taskCompletionRate = await this.taskService.calculateCompletionRate(user.id);
+        const overdueTasks = await this.taskService.getOverdueTasks(user.id);
+        return { taskCompletionRate, overdueTasks, tasks: userTasks };
+    }    
     @Put('update-task')
     @ApiOperation({ summary: 'Update a task'})
     @UseGuards(AuthGuard, TaskAccessGuard)
